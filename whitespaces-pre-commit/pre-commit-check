@@ -17,12 +17,8 @@ else
 fi
 
 for FILE in `exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq` ; do
-    echo " * $FILE contains trailing whitespaces"
+    git diff --staged --check "$FILE"
     DENY_COMMIT=1
-
-    # Uncomment this if you want to automatically fix trailing whitespaces
-    #sed -i 's/[[:space:]]*$//' "$FILE"
-
 done
 
 exit $DENY_COMMIT
