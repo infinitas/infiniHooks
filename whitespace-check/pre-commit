@@ -7,7 +7,8 @@
 #
 # @author Sebastian Kaspari <s.kaspari@googlemail.com>
 #
-DENY_COMMIT=0
+
+$RETVAL=0
 
 if git-rev-parse --verify HEAD >/dev/null 2>&1 ; then
     against=HEAD
@@ -18,7 +19,8 @@ fi
 
 for FILE in $(exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq) ; do
     git diff --staged --check "$FILE"
-    DENY_COMMIT=1
 done
 
-exit $DENY_COMMIT
+if [ $RETVAL -ne 0 ]; then
+	exit $RETVAL
+fi

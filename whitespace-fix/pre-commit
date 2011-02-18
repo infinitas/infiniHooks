@@ -18,5 +18,3 @@ for FILE in $(exec git diff-index --check --cached $against -- | sed '/^[+-]/d' 
     echo " * Fixed trailing whitespaces in $FILE"
     sed -i 's/[[:space:]]*$//' "$FILE"
 done
-
-exit 0
