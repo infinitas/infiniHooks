@@ -19,6 +19,7 @@ fi
 
 for FILE in $(exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq) ; do
     git diff --staged --check "$FILE"
+	$RETVAL=1
 done
 
 if [ $RETVAL -ne 0 ]; then
