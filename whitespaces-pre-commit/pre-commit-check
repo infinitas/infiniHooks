@@ -1,0 +1,24 @@
+# A git hook script to find trailing whitespaces and
+# deny committing these files until they are fixed
+#
+# Inspired by: http://snipplr.com/view.php?codeview&id=28523
+#
+# TODO: Add option: pattern of files to be checked
+#
+# @author Sebastian Kaspari <s.kaspari@googlemail.com>
+#
+DENY_COMMIT=0
+
+if git-rev-parse --verify HEAD >/dev/null 2>&1 ; then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+fi
+
+for FILE in $(exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq) ; do
+    git diff --staged --check "$FILE"
+    DENY_COMMIT=1
+done
+
+exit $DENY_COMMIT
