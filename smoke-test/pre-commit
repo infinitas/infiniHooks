@@ -1,0 +1,8 @@
+#!/bin/sh
+
+OUTPUT=$(phpunit tests/smoke.test.php)
+ 
+if [ $RETVAL -ne 0 ]; then
+	echo "$OUTPUT" | less
+	exit $RETVAL
+fi
