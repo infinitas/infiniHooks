@@ -26,7 +26,7 @@ function copyFiles($files, $name = null) {
 	}
 	$return = array(
 		'dir' => "/tmp/$name",
-		'files'
+		'files' => array()
 	);
 
 	`rm -rf /tmp/$name`;
