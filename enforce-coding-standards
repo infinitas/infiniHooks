@@ -6,7 +6,7 @@ require __DIR__ .'/utils.php';
 $stagedFiles = stagedFiles();
 $tmp = copyFiles($stagedFiles);
 
-$args = $CONFIG['phpcs'];
+$args = $config['phpcs'];
 foreach($args as $key => &$value) {
 	if ($value === true) {
 		$value = "$key";

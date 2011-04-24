@@ -1,17 +1,17 @@
 <?php
 
-$CONFIG = array(
-    'preCommit' => array(
-        'run-php-lint',
-        'enforce-coding-standards',
-        'run-phpunit',
-    ),
-    'postCommit' => array(
-        'happy-commits',
-    ),
+$config = array(
+	'preCommit' => array(
+		'run-php-lint',
+		'enforce-coding-standards',
+		'run-phpunit',
+	),
+	'postCommit' => array(
+		'happy-commits',
+	),
 );
 
-$CONFIG['phpcs'] = array(
+$config['phpcs'] = array(
 	'-n' => true,
 	'-s' => true,
 	'--extensions' => 'php,ctp',

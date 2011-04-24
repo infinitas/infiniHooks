@@ -3,6 +3,6 @@ A set of hooks for git for various projects.
 To install:
 1) Symlink this directory to .git/hooks
    ln -s /path/to/this/directory /path/to/your/git/repo/.git/hooks
-2) Copy Config.sample.php to Config.php
-   cp /path/to/your/git/repo/.git/hooks/Config.sample.php /path/to/your/git/repo/.git/hooks/Config.php
-3) Edit Config.php--comment out any hooks you don't want to run, add others, etc.
+2) Copy config.sample.php to config.php
+   cp /path/to/your/git/repo/.git/hooks/config.sample.php /path/to/your/git/repo/.git/hooks/config.php
+3) Edit config.php--comment out any hooks you don't want to run, add others, etc.

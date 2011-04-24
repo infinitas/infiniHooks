@@ -4,7 +4,7 @@
 $dirname = dirname(__FILE__);
 require "{$dirname}/Config.php";
 
-$commandsToRun = $CONFIG['postCommit'];
+$commandsToRun = $config['postCommit'];
 if (!is_array($commandsToRun)) exit(0);
 
 foreach ($commandsToRun as $command) {
