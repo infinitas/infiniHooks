@@ -3,8 +3,6 @@
 $CONFIG = array(
     'preCommit' => array(
         'run-php-lint',
-        'check-for-dos-endings',
-        'check-whitespace',
         'enforce-coding-standards',
         'run-phpunit',
     ),
@@ -13,5 +11,11 @@ $CONFIG = array(
     ),
 );
 
-// Currently uses PHP CodeSniffer
-$CONFIG['codingStandard'] = 'Yourcodingstandard';
+$CONFIG['phpcs'] = array(
+	'-n' => true,
+	'-s' => true,
+	'--extensions' => 'php,ctp',
+	'--encoding' => 'UTF-8',
+	'--standard' => 'Cake',
+	'--report-width' => `tput cols`
+);

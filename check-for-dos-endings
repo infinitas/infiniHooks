@@ -1,25 +1,23 @@
 #!/usr/bin/env php
 <?php
 
-$output = array();
+require __DIR__ .'/utils.php';
+
+$stagedFiles = stagedFiles();
+$tmpFiles = copyFiles($stagedFiles);
+
 $return = 0;
 $exit_status = 0;
 
-// Find the files that are staged for this commit
-exec('git rev-parse --verify HEAD 2> /dev/null', $output, $return);
-$against = $return == 0 ? 'HEAD' : '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
-$output = array();
-exec("git diff-index --cached --name-only {$against}", $output);
-
-foreach ($output as $file) {
+foreach ($tmpFiles as $file) {
     // finds any DOS carriage returns, but ignores .git directory
     // REGEX from:  http://stackoverflow.com/questions/73833/how-do-you-search-for-files-containing-dos-line-endings-crlf-with-grep-under-li
     $cmd = "grep -PIlsr '\\r\\n' {$file}";
 
-    $results = array();
+    $output = array();
     exec($cmd, $output, $return);
     if ($return != 1) {
-        echo "DOS line endings detected\n" . implode("\n", $results);
+        echo "DOS line endings detected\n" . implode("\n", $output);
         $exit_status = 1;
     }
 }

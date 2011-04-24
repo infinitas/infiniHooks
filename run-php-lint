@@ -1,17 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-$output = array();
-$return = 0;
-exec('git rev-parse --verify HEAD 2> /dev/null', $output, $return);
-$against = $return == 0 ? 'HEAD' : '4b825dc642cb6eb9a060e54bf8d69288fbee4904';
+require __DIR__ .'/utils.php';
 
-exec("git diff-index --cached --name-only {$against}", $output);
+$stagedFiles = stagedFiles();
+$tmpFiles = copyFiles($stagedFiles);
 
 $filename_pattern = '/\.php$/';
 $exit_status = 0;
 
-foreach ($output as $file) {
+foreach ($tmpFiles as $file) {
     if (!preg_match($filename_pattern, $file)) {
         // don't check files that aren't PHP
         continue;
@@ -22,6 +20,7 @@ foreach ($output as $file) {
     if ($return != 0) {
         echo implode("\n", $lint_output), "\n";
         $exit_status = 1;
-        exit($exit_status);
     }
 }
+
+exit($exit_status);

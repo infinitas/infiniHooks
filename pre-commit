@@ -1,18 +1,22 @@
 #!/usr/bin/env php
 <?php
 
-$dirname = dirname(__FILE__);
-require "{$dirname}/Config.php";
+require __DIR__ .'/config.php';
 
-$commandsToRun = $CONFIG['preCommit'];
-if (!is_array($commandsToRun)) exit(0);
+if (empty($CONFIG['preCommit'])) {
+	exit(0);
+}
 
-foreach ($commandsToRun as $command) {
+$exit = 0;
+
+foreach ($CONFIG['preCommit'] as $command) {
     $output = array();
     $return = 0;
-    exec("{$dirname}/{$command}", $output, $return);
-    if ($return != 0) {
+    exec(__DIR__ . "/$command", $output, $return);
+    if ($return) {
         echo implode("\n", $output) . "\n";
-        exit(1);
+		$exit = 1;
     }
 }
+
+exit ($exit);
