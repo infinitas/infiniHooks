@@ -20,8 +20,8 @@ OR include this repo in your path
 	cd /any/project/you/like
 	installGitHooks
 
-This will symlink the commands you might want to use into your .git/hooks folder - and create a
-config file which you can use to customize for each project how the hooks work
+This will symlink the commands you might want to use into your .git/hooks folder, link all githooks to the one-hook file, and create a config file which you can use to customize how the hooks work
+for each project
 
 # Credits
 
