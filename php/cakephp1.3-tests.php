@@ -50,15 +50,10 @@ function testCategory($file) {
 
 
 $stagedFiles = stagedFiles();
-$filename_pattern = '/\.(ctp|php)$/';
 $testCases = array();
 $exit_status = 0;
 
 foreach ($stagedFiles as $file) {
-    if (!preg_match($filename_pattern, $file)) {
-        // don't check files that aren't PHP
-        continue;
-    }
 	list($category, $case) = testCase($file);
 
 	if (!$case) {
