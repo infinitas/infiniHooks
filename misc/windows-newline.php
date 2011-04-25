@@ -17,7 +17,7 @@ foreach ($tmp['files'] as $file) {
     $output = array();
     exec($cmd, $output, $return);
     if ($return != 1) {
-        echo "DOS line endings detected\n" . implode("\n", $output);
+        echo "DOS line endings detected\n" . implode("\n", $output) . "\n";
         $exit_status = 1;
     }
 }
@@ -27,7 +27,7 @@ exit($exit_status);
 /**
  * bash script to fix dos files:
  * WARNING:  this overwrites files in place
- * 
+ *
  *     for f in `grep -PIlsr '\r\n' . | grep -v '.git'`; do dos2unix ${f}; done
- * 
+ *
  **/

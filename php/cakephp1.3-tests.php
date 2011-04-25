@@ -39,7 +39,6 @@ function testCategory($file) {
 		$file = $_file;
 	}
 
-	print_r($file);
 	$ds = DIRECTORY_SEPARATOR;
 	if (strpos($file, "{$ds}lib{$ds}Cake{$ds}") !== false) {
 		return 'core';
