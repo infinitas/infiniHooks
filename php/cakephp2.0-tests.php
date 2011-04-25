@@ -16,7 +16,7 @@ function testFile($file) {
 		if (preg_match('@.*lib[\\\/]Cake[\\\/]@', $file)) {
 			return preg_replace('@.*tests[\\\/]cases[\\\/]@', 'lib' . DS . 'Cake' . DS, $file);
 		}
-		return preg_replace('@.*tests[\\\/]cases[\\\/]@', $file);
+		return preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $file);
 	}
 	return $file;
 }
