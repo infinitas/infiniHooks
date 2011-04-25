@@ -24,6 +24,7 @@ for f in $(ls -A $src 2>/dev/null); do
 done
 
 commands[$i]="cp $src/config.sample.php .git/hooks/config.php"
+let i++
 
 for f in applypatch-msg commit-msg post-commit post-receive post-update pre-applypatch pre-commit prepare-commit-msg pre-rebase update; do
 	commands[$i]="ln -sf $src/one-hook .git/hooks/$f"
