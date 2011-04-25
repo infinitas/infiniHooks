@@ -1,22 +1,32 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ .'/utils.php';
-
+require dirname(__DIR__) .'/utils.php';
 $stagedFiles = stagedFiles();
-$tmpFiles = copyFiles($stagedFiles);
+$tmp = copyFiles($stagedFiles);
+
+if ($tmp['dir'] && !is_dir($tmp['dir'])) {
+	echo "{$tmp['dir']} doesn't exist\n";
+	exit(1);
+}
+if (empty($tmp['files'])) {
+	echo "No files to check\n";
+	exit(0);
+}
 
 $filename_pattern = '/\.php$/';
 $exit_status = 0;
 
-foreach ($tmpFiles as $file) {
+foreach ($tmp['files'] as $file) {
     if (!preg_match($filename_pattern, $file)) {
         // don't check files that aren't PHP
         continue;
     }
 
+	$cmd = "php -l " . escapeshellarg($file);
     $lint_output = array();
-    exec("php -l " . escapeshellarg($file), $lint_output, $return);
+	echo "$cmd\n";
+    exec($cmd, $lint_output, $return);
     if ($return != 0) {
         echo implode("\n", $lint_output), "\n";
         $exit_status = 1;

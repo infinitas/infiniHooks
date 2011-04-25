@@ -1,10 +1,14 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ .'/config.php';
-require __DIR__ .'/utils.php';
+require $_SERVER['PWD'] . '/.git/hooks/config.php';
+require $_SERVER['PWD'] . '/.git/hooks/utils.php';
 
 $stagedFiles = stagedFiles();
 $tmp = copyFiles($stagedFiles);
+if (!is_dir($tmp['dir'])) {
+	echo "{$tmp['dir']} doesn't exist";
+	exit(1);
+}
 
 $args = $config['phpcs'];
 foreach($args as $key => &$value) {
@@ -15,9 +19,9 @@ foreach($args as $key => &$value) {
 	}
 }
 $cmd = "phpcs " . implode($args, ' ') . " " . escapeshellarg($tmp['dir']);
+echo "$cmd\n";
 exec($cmd, $output, $return);
 if ($return != 0) {
-	echo $cmd . "\n";
 	echo implode("\n", $output), "\n";
 	exit(1);
 }

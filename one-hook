@@ -1,15 +1,15 @@
 #!/usr/bin/env php
 <?php
-
-require __DIR__ .'/config.php';
-
-if (empty($config[__FILE__])) {
+require  dirname($_SERVER['SCRIPT_FILENAME']) . '/config.php';
+$file = basename($_SERVER['SCRIPT_FILENAME']);
+if (empty($config[$file])) {
 	exit(0);
 }
 
 $exit = 0;
 
-foreach ($config[__FILE__] as $command) {
+foreach ($config[$file] as $command) {
+	echo "running $command\n";
     $output = array();
     $return = 0;
     exec(__DIR__ . "/$command", $output, $return);

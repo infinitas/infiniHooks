@@ -1,5 +1,7 @@
 <?php
-
+if (!defined('DS')) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
 /**
  * Return an array of relative file paths for files contained in the commit
  *
@@ -26,7 +28,7 @@ function stagedFiles() {
  */
 function copyFiles($files, $name = null) {
 	if (!$name) {
-		$name = basename(getcwd());
+		$name = trim(basename($_SERVER['PWD']));
 	}
 	$return = array(
 		'dir' => "/tmp/$name",

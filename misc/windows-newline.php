@@ -1,15 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ .'/utils.php';
+require dirname(__DIR__) .'/utils.php';
 
 $stagedFiles = stagedFiles();
-$tmpFiles = copyFiles($stagedFiles);
+$tmp = copyFiles($stagedFiles);
 
 $return = 0;
 $exit_status = 0;
 
-foreach ($tmpFiles as $file) {
+foreach ($tmp['files'] as $file) {
     // finds any DOS carriage returns, but ignores .git directory
     // REGEX from:  http://stackoverflow.com/questions/73833/how-do-you-search-for-files-containing-dos-line-endings-crlf-with-grep-under-li
     $cmd = "grep -PIlsr '\\r\\n' {$file}";

@@ -2,9 +2,9 @@
 
 $config = array(
 	'pre-commit' => array(
-		'php/lint',
-		'php/phpcs',
-		'php/phpunit',
+		'php/lint.php',
+		'php/phpcs.php',
+		'php/phpunit.php',
 	),
 	'post-commit' => array(
 		'misc/happy-commits',
