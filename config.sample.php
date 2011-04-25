@@ -7,7 +7,7 @@ $config = array(
 		'php/phpunit',
 	),
 	'post-commit' => array(
-		'happy-commits',
+		'misc/happy-commits',
 	),
 );
 
