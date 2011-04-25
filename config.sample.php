@@ -1,12 +1,12 @@
 <?php
 
 $config = array(
-	'preCommit' => array(
-		'run-php-lint',
-		'enforce-coding-standards',
-		'run-phpunit',
+	'pre-commit' => array(
+		'php/lint',
+		'php/phpcs',
+		'php/phpunit',
 	),
-	'postCommit' => array(
+	'post-commit' => array(
 		'happy-commits',
 	),
 );

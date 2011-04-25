@@ -3,13 +3,13 @@
 
 require __DIR__ .'/config.php';
 
-if (empty($config['preCommit'])) {
+if (empty($config[__FILE__])) {
 	exit(0);
 }
 
 $exit = 0;
 
-foreach ($config['preCommit'] as $command) {
+foreach ($config[__FILE__] as $command) {
     $output = array();
     $return = 0;
     exec(__DIR__ . "/$command", $output, $return);
