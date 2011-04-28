@@ -18,5 +18,5 @@ $config['phpcs'] = array(
 	'--extensions' => 'php,ctp',
 	'--encoding' => 'UTF-8',
 	'--standard' => 'Cake',
-	'--report-width' => `tput cols`
+	'--report-width' => trim(`tput cols`)
 );
