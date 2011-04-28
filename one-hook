@@ -8,7 +8,11 @@ if (empty($config[$file])) {
 
 $exit = 0;
 
-foreach ($config[$file] as $command) {
+foreach ($config[$file] as $command => $halt) {
+	if (is_numeric($command)) {
+		$command = $halt;
+		$halt = false;
+	}
 	echo "running $command\n";
     $output = array();
     $return = 0;
@@ -17,6 +21,9 @@ foreach ($config[$file] as $command) {
 		$exit = 1;
         echo implode("\n", $output) . "\n";
         echo "\tFAIL\n";
+		if ($halt) {
+			exit ($exit);
+		}
     } else {
         echo "\tOK\n";
     }
