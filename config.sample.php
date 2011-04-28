@@ -29,6 +29,11 @@ $config = array(
 				'--standard' => 'Cake',
 				'--report-width' => trim(`tput cols`)
 			)
+		),
+		'js' => array(
+			'lint' => array(
+				'pattern' => '/\.js$/'
+			)
 		)
 	)
 );
