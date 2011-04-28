@@ -14,8 +14,11 @@ foreach ($config[$file] as $command) {
     $return = 0;
     exec(__DIR__ . "/$command", $output, $return);
     if ($return) {
-        echo implode("\n", $output) . "\n";
 		$exit = 1;
+        echo implode("\n", $output) . "\n";
+        echo "\tFAIL\n";
+    } else {
+        echo "\tOK\n";
     }
 }
 

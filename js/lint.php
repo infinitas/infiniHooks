@@ -22,14 +22,15 @@ foreach ($tmp['files'] as $file) {
         continue;
     }
 
-	$cmd = "jslint " . escapeshellarg($file);
+	$cmd = "jslint -p " . escapeshellarg($file);
     $lint_output = array();
 	echo "$cmd\n";
     exec($cmd, $lint_output, $return);
-    if ($return != 0) {
+    if ($return) {
         echo implode("\n", $lint_output), "\n";
         $exit_status = 1;
     }
 }
 
+exit(2);
 exit($exit_status);
