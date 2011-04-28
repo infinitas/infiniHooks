@@ -5,9 +5,21 @@ if (!defined('DS')) {
 /**
  * Return an array of relative file paths for files contained in the commit
  *
+ * If called outside the context of a git hook, return all files
+ *
  */
 function stagedFiles() {
-	$output = array();
+	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
+		exec("find . -type f ! -name '*~' ! -wholename '*.git/*' ! -wholename '*/tmp/*'", $output);
+		foreach($output as $i => &$file) {
+			if (in_array($i, array('.', '..'))) {
+				unset ($output[$i]);
+				continue;
+			}
+			$file = preg_replace('@^\./@', '', $file);
+		}
+		return array_filter($output);
+	}
 	exec('git rev-parse --verify HEAD 2> /dev/null', $output, $return);
 	if ($return === 0) {
 		$against = 'HEAD';
@@ -34,13 +46,23 @@ function copyFiles($files, $name = null) {
 		'dir' => "/tmp/$name",
 		'files' => array()
 	);
-
 	`rm -rf /tmp/$name`;
-	foreach($files as $path) {
-		$dir = dirname($path);
- 		`mkdir -p /tmp/$name/$dir`;
-		`git cat-file blob $(git diff-index --cached HEAD $path | cut -d " " -f4) > /tmp/$name/$path`;
-		$return['files'][] = "/tmp/$name/$path";
+
+	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
+		`cp -R . /tmp/$name`;
+		foreach($files as $file) {
+			$return['files'][] = "/tmp/$name/$file";
+		}
+		return $return;
+	}
+
+	foreach($files as $file) {
+		$dir = dirname($file);
+		if (!is_dir("/tmp/$name/$dir")) {
+ 			`mkdir -p /tmp/$name/$dir`;
+		}
+		`git cat-file blob $(git diff-index --cached HEAD $file | cut -d " " -f4) > /tmp/$name/$file`;
+		$return['files'][] = "/tmp/$name/$file";
 	}
 
 	return $return;
