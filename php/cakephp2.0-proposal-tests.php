@@ -21,12 +21,12 @@ function testFile($file) {
 	return $file;
 }
 
-$stagedFiles = stagedFiles();
+$files = files();
 $filename_pattern = '/\.(php)$/';
 $toTest = array();
 $exit_status = 0;
 
-foreach ($stagedFiles as $file) {
+foreach ($files as $file) {
 	$file = testFile($file);
 
 	if (!$file) {

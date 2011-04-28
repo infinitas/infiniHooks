@@ -49,11 +49,11 @@ function testCategory($file) {
 }
 
 
-$stagedFiles = stagedFiles();
+$files = files();
 $testCases = array();
 $exit_status = 0;
 
-foreach ($stagedFiles as $file) {
+foreach ($files as $file) {
 	list($category, $case) = testCase($file);
 
 	if (!$case) {

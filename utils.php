@@ -8,7 +8,7 @@ if (!defined('DS')) {
  * If called outside the context of a git hook, return all files
  *
  */
-function stagedFiles() {
+function files() {
 	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
 		exec("find . -type f ! -name '*~' ! -wholename '*.git/*' ! -wholename '*/tmp/*'", $output);
 		foreach($output as $i => &$file) {

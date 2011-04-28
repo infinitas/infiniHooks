@@ -3,8 +3,8 @@
 
 require dirname(__DIR__) .'/utils.php';
 
-$stagedFiles = stagedFiles();
-$tmp = copyFiles($stagedFiles);
+$files = files();
+$tmp = copyFiles($files);
 
 $return = 0;
 $exit_status = 0;

@@ -2,8 +2,8 @@
 <?php
 
 require dirname(__DIR__) .'/utils.php';
-$stagedFiles = stagedFiles();
-$tmp = copyFiles($stagedFiles);
+$files = files();
+$tmp = copyFiles($files);
 
 if (empty($tmp['files'])) {
 	echo "No files to check\n";
