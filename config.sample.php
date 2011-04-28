@@ -3,6 +3,7 @@
 $config = array(
 	'pre-commit' => array(
 		'php/lint.php',
+		'js/lint.php',
 		'php/phpcs.php',
 		'php/phpunit.php',
 	),
