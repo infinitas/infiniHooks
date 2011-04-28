@@ -1,7 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-require dirname(__DIR__) .'/utils.php';
+require $_SERVER['PWD'] . '/.git/hooks/config.php';
+require $_SERVER['PWD'] . '/.git/hooks/utils.php';
+
 $stagedFiles = stagedFiles();
 $tmp = copyFiles($stagedFiles);
 
@@ -14,12 +16,12 @@ if ($tmp['dir'] && !is_dir($tmp['dir'])) {
 	exit(1);
 }
 
+$config = $config['php']['lint'];
 
-$pattern = '/\.php$/';
 $status = 0;
 
 foreach ($tmp['files'] as $file) {
-	if (!preg_match($pattern, $file)) {
+	if (!preg_match($config['pattern'], $file)) {
 		continue;
 	}
 

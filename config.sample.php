@@ -12,11 +12,16 @@ $config = array(
 	),
 );
 
-$config['phpcs'] = array(
-	'-n' => true,
-	'-s' => true,
-	'--extensions' => 'php,ctp',
-	'--encoding' => 'UTF-8',
-	'--standard' => 'Cake',
-	'--report-width' => trim(`tput cols`)
+$config['php'] = array(
+	'lint' => array(
+		'pattern' => '/\.php$/'
+	),
+	'phpcs' => array(
+		'-n' => true,
+		'-s' => true,
+		'--extensions' => 'php,ctp',
+		'--encoding' => 'UTF-8',
+		'--standard' => 'Cake',
+		'--report-width' => trim(`tput cols`)
+	)
 );

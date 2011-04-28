@@ -10,7 +10,7 @@ if (!is_dir($tmp['dir'])) {
 	exit(1);
 }
 
-$args = $config['phpcs'];
+$args = $config['php']['phpcs'];
 foreach($args as $key => &$value) {
 	if ($value === true) {
 		$value = "$key";
@@ -18,6 +18,7 @@ foreach($args as $key => &$value) {
 		$value = "$key=$value";
 	}
 }
+
 $cmd = "phpcs " . implode($args, ' ') . " " . escapeshellarg($tmp['dir']);
 echo "$cmd\n";
 exec($cmd, $output, $return);
