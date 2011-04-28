@@ -5,13 +5,14 @@ require dirname(__DIR__) .'/utils.php';
 $stagedFiles = stagedFiles();
 $tmp = copyFiles($stagedFiles);
 
-if ($tmp['dir'] && !is_dir($tmp['dir'])) {
-	echo "{$tmp['dir']} doesn't exist\n";
-	exit(1);
-}
 if (empty($tmp['files'])) {
 	echo "No files to check\n";
 	exit(0);
+}
+
+if ($tmp['dir'] && !is_dir($tmp['dir'])) {
+	echo "{$tmp['dir']} doesn't exist\n";
+	exit(1);
 }
 
 $filename_pattern = '/\.js$/';
@@ -32,5 +33,4 @@ foreach ($tmp['files'] as $file) {
     }
 }
 
-exit(2);
 exit($exit_status);
