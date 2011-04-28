@@ -4,9 +4,21 @@ if (!defined('DS')) {
 }
 
 function config($branch = null)  {
+	if (!$branch) {
+		$branch = trim(`git name-rev --name-only HEAD`);
+	}
 	require '.git/hooks/config.php';
 
-	return $config;
+	$return = array();
+
+	foreach($config as $pattern => $c) {
+		$pattern = str_replace('*', '.*', $pattern);
+		if (preg_match("@$pattern@", $branch)) {
+			$return += $c;
+		}
+	}
+
+	return $return;
 }
 
 /**
