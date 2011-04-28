@@ -10,7 +10,7 @@
  * the branch name pattern is optional, if you want one set of hooks for all branches
  * you can remove that level from the array.
  *
- * Anything else present in the array is ignored by the one-hook script, but can be
+ * Anything else present in $config is ignored by the one-hook script, but can be
  * picked up by the individual scripts
  */
 $config = array(
