@@ -2,6 +2,13 @@
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
 }
+
+function config($branch = null)  {
+	require '.git/hooks/config.php';
+
+	return $config;
+}
+
 /**
  * Return an array of relative file paths for files contained in the commit
  *
