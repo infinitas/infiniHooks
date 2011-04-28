@@ -9,6 +9,10 @@ function config($branch = null)  {
 	}
 	require '.git/hooks/config.php';
 
+	if (!empty($config['pre-commit'])) {
+		return $config;
+	}
+
 	$return = array();
 
 	foreach($config as $pattern => $c) {
