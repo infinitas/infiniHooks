@@ -13,19 +13,19 @@ foreach ($config[$file] as $command => $halt) {
 		$command = $halt;
 		$halt = false;
 	}
-	echo "running $command\n";
+	echo "running $command ... \t";
     $output = array();
     $return = 0;
     exec(__DIR__ . "/$command", $output, $return);
     if ($return) {
+        echo "FAIL\n";
 		$exit = 1;
         echo implode("\n", $output) . "\n";
-        echo "\tFAIL\n";
 		if ($halt) {
 			exit ($exit);
 		}
     } else {
-        echo "\tOK\n";
+        echo "OK\n";
     }
 }
 
