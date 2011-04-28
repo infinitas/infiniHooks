@@ -19,7 +19,6 @@ $exit_status = 0;
 
 foreach ($tmp['files'] as $file) {
     if (!preg_match($filename_pattern, $file)) {
-        // don't check files that aren't PHP
         continue;
     }
 
