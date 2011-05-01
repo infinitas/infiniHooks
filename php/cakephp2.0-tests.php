@@ -22,8 +22,13 @@ function testCase($file) {
 		return array(false, false);
 	}
 	if ($category === 'core') {
+		$file = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $case) . 'Test.php';
 		$case = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $case);
 		$case[0] = strtoupper($case[0]);
+
+		if (!file_exists($file)) {
+			return array(false, false);
+		}
 		return array('core', $case);
 	} else {
 		$relativeFile = preg_replace('@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/])|App[-a-z]*$)@', '\1', $case);
