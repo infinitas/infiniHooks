@@ -25,7 +25,7 @@ function testCase($file) {
 	);
 
 	if (preg_match('@tests[\\\/]@', $file)) {
-		if (preg_match('@\Test\.php$@', $file)) {
+		if (preg_match('@Test\.php$@', $file)) {
 			$return['testFile'] = $file;
 			$return['testFileExists'] = true;
 			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
