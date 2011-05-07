@@ -34,8 +34,11 @@ function config($branch = null)  {
 function files() {
 	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
 		$where = '.';
-		$locations = $_SERVER['argv'];
-		array_shift($locations);
+		$locations = func_get_args();
+		if (!$locations) {
+			$locations = $_SERVER['argv'];
+			array_shift($locations);
+		}
 		if ($locations) {
 			$where = implode($locations, ' ');
 		}
