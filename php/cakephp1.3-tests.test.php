@@ -244,31 +244,6 @@ class Cakephp13HookTest extends PHPUnit_Framework_TestCase {
 
 	function testCoreFiles() {
 
-		$result = testCase('index.php');
-		$this->assertEquals('app', $result['category']);
-		$this->assertEquals('index', $result['case']);
-		$this->assertEquals('index', $result['testFile']);
-
-		$result = testCase('app/index.php');
-		$this->assertEquals('app', $result['category']);
-		$this->assertEquals('app/index', $result['case']);
-		$this->assertEquals('app/index', $result['testFile']);
-
-		$result = testCase('app/webroot/css.php');
-		$this->assertEquals('app', $result['category']);
-		$this->assertEquals('app/webroot/css', $result['case']);
-		$this->assertEquals('app/webroot/css', $result['testFile']);
-
-		$result = testCase('app/webroot/test.php');
-		$this->assertEquals('app', $result['category']);
-		$this->assertEquals('app/webroot/test', $result['case']);
-		$this->assertEquals('app/webroot/test', $result['testFile']);
-
-		$result = testCase('app/webroot/index.php');
-		$this->assertEquals('app', $result['category']);
-		$this->assertEquals('app/webroot/index', $result['case']);
-		$this->assertEquals('app/webroot/index', $result['testFile']);
-
 		$result = testCase('cake/bootstrap.php');
 		$this->assertEquals('core', $result['category']);
 		$this->assertEquals('bootstrap', $result['case']);
