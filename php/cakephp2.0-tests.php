@@ -36,7 +36,7 @@ function testCase($file) {
 			}
 		}
 	} elseif ($return['category'] === 'core') {
-		$return['testCaseFile'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $return['case']) . 'Test.php';
+		$return['testFile'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $return['case']) . 'Test.php';
 
 		$return['case'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $return['case']);
 		$return['case'][0] = strtoupper($return['case'][0]);
@@ -54,7 +54,7 @@ function testCase($file) {
 		);
 	}
 
-	$return['testCaseFileExists'] = file_exists($return['testCaseFile']);
+	$return['testFileExists'] = file_exists($return['testFile']);
 	return $return;
 }
 
@@ -91,8 +91,11 @@ function testCases($files) {
 	foreach ($files as $file) {
 		$data = testCase($file);
 
-		if (!$data['testCaseFileExists']) {
-			echo "Skipping $file (test case {$data['testCaseFile']} not found)\n";
+		if ($data === false || !$data['testFile']) {
+			continue;
+		}
+		if (!$data['testFileExists']) {
+			echo "Skipping $file (test case {$data['testFile']} not found)\n";
 			continue;
 		}
 		$return[$data['category']][$data['case']] = true;
