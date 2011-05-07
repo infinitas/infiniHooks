@@ -43,7 +43,7 @@ function testCase($file) {
 	} else {
 		$return['testFile'] = preg_replace(
 			'@(.*)((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/]).*$|App[-a-z]*$)@',
-			'\1tests/Case/\2.Test.php',
+			'\1tests/Case/\2Test.php',
 			$return['case']
 		);
 
@@ -123,5 +123,35 @@ function runTestCases($files = null) {
 	return $exit;
 }
 
-$exit = runTestCases();
-exit($exit);
+function writeTest() {
+	$out = "<?php\ndefine('RUNNING_TESTS', true);\nrequire __DIR__ . '/cakephp2.0-tests.php';\n\n";
+	$out .= "class Cakephp20HookTest extends PHPUnit_Framework_TestCase {\n\n\tfunction testTestCase() {\n";
+	foreach (files() as $file) {
+		$data = testCase($file);
+
+		$out .=  "\n\t\t\$result = testCase('$file');\n";
+		if (!$data) {
+			$out .=  "\t\t\$this->assertFalse(\$result);\n";
+			continue;
+		}
+		if (!$data['testFile']) {
+			$out .=  "\t\t\$this->assertFalse(\$result['testFile']);\n";
+			continue;
+		}
+		$out .=  "\t\t\$this->assertEquals('{$data['category']}', \$result['category']);\n";
+		$out .=  "\t\t\$this->assertEquals('{$data['case']}', \$result['case']);\n";
+		$out .=  "\t\t\$this->assertEquals('{$data['testFile']}', \$result['testFile']);\n";
+	}
+
+	$out .= "\t}\n}";
+	file_put_contents('cakephp2.0-tests.test.php', $out);
+	echo $out;
+}
+
+if (defined('WRITE_TESTS')) {
+	writeTest();
+} elseif (!defined('RUNNING_TESTS')) {
+	$exit = runTestCases();
+	exit($exit);
+}
+
