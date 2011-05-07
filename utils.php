@@ -33,7 +33,13 @@ function config($branch = null)  {
  */
 function files() {
 	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
-		exec("find . -type f ! -name '*~' ! -wholename '*.git/*' ! -wholename '*/tmp/*'", $output);
+		$where = '.';
+		$locations = $_SERVER['argv'];
+		array_shift($locations);
+		if ($locations) {
+			$where = implode($locations, ' ');
+		}
+		exec("find $where -type f ! -name '*~' ! -wholename '*.git/*' ! -wholename '*/tmp/*'", $output);
 		foreach($output as $i => &$file) {
 			if (in_array($i, array('.', '..'))) {
 				unset ($output[$i]);
