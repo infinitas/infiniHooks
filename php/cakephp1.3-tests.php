@@ -87,7 +87,7 @@ function testCategory($file) {
 	}
 
 	$ds = DIRECTORY_SEPARATOR;
-	if (strpos($file, "{$ds}cake{$ds}") !== false) {
+	if (strpos($file, "cake{$ds}") !== false) {
 		return 'core';
 	} elseif (preg_match('@plugins[\\\/]([^\\/]*)@', $file, $match)) {
 		return $match[1];
