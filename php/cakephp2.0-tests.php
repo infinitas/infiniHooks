@@ -3,6 +3,15 @@
 
 require dirname(__DIR__) .'/utils.php';
 
+/**
+ * testCase
+ *
+ * Find the test case for the passed file. The file could itself be a test.
+ *
+ * @param mixed $file
+ * @access public
+ * @return array(type, case)
+ */
 function testCase($file) {
 	if (!preg_match('@\.php$@', $file) || preg_match('@(config|test_app)[\\\/]@', $file)) {
 		return false;
@@ -22,22 +31,44 @@ function testCase($file) {
 		return array(false, false);
 	}
 	if ($category === 'core') {
-		$file = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $case) . 'Test.php';
-		$case = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $case);
-		$case[0] = strtoupper($case[0]);
-
-		if (!file_exists($file)) {
+		$testCaseFile = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $case) . 'Test.php';
+		if (!file_exists($testCaseFile)) {
 			return array(false, false);
 		}
+
+		$case = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $case);
+		$case[0] = strtoupper($case[0]);
 		return array('core', $case);
 	} else {
-		$relativeFile = preg_replace('@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/])|App[-a-z]*$)@', '\1', $case);
+		$testCaseFile = preg_replace(
+			'@(.*)((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/]).*$|App[-a-z]*$)@',
+			'\1tests/Case/\2.Test.php',
+			$case
+		);
+		if (!file_exists($testCaseFile)) {
+			return array(false, false);
+		}
+
+		$relativeFile = preg_replace(
+			'@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/])|App[-a-z]*$)@',
+			'\1',
+			$case
+		);
 		$baseDir = str_replace($relativeFile, '', $case);
 	}
 
 	return array($category, $relativeFile);
 }
 
+/**
+ * testCategory
+ *
+ * For the given file, what category of test is it? returns app, core or the name of the plugin
+ *
+ * @param mixed $file
+ * @access public
+ * @return string
+ */
 function testCategory($file) {
 	$_file = realpath($file);
 	if ($_file) {
@@ -56,7 +87,7 @@ function testCategory($file) {
 
 $files = files();
 $testCases = array();
-$exit_status = 0;
+$exit = 0;
 
 foreach ($files as $file) {
 	list($category, $case) = testCase($file);
@@ -72,13 +103,13 @@ foreach($testCases as $category => $cases) {
 		$output = array();
 		$cmd = "cake testsuite $category $case";
 		echo "$cmd\n";
-    	exec($cmd, $output, $return);
+		exec($cmd, $output, $return);
 
 		if ($return != 0) {
 			echo implode("\n", $output), "\n";
-			$exit_status = 1;
+			$exit = 1;
 		}
 	}
 }
 
-exit($exit_status);
+exit($exit);
