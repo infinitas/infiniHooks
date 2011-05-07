@@ -129,11 +129,11 @@ function writeTest() {
 	foreach (files() as $file) {
 		$data = testCase($file);
 
-		$out .=  "\n\t\t\$result = testCase('$file');\n";
 		if (!$data) {
-			$out .=  "\t\t\$this->assertFalse(\$result);\n";
 			continue;
 		}
+
+		$out .=  "\n\t\t\$result = testCase('$file');\n";
 		if (!$data['testFile']) {
 			$out .=  "\t\t\$this->assertFalse(\$result['testFile']);\n";
 			continue;
