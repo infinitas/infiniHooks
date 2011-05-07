@@ -47,13 +47,13 @@ function testCase($file) {
 			$return['case']
 		);
 		$return['testFile'] = preg_replace(
-			'@(.*)((?:(?:config|controllers|componentslibs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
+			'@(.*)((?:(?:config|controllers|components|libs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
 			'\1tests/cases/\2\.test.php',
 			$return['case']
 		);
 
 		$return['case'] = preg_replace(
-			'@.*((?:(?:config|controllers|componentslibs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
+			'@.*((?:(?:config|controllers|components|libs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
 			'\1',
 			$return['case']
 		);
