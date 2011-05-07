@@ -16,48 +16,46 @@ function testCase($file) {
 	if (!preg_match('@\.php$@', $file) || preg_match('@(config|test_app)[\\\/]@', $file)) {
 		return false;
 	}
-	$category = testCategory($file);
-	$case = str_replace('.php', '', $file);
+
+	$return = array(
+		'category' => testCategory($file),
+		'case' => str_replace('.php', '', $file),
+		'testFile' => false,
+		'testFileExists' => false,
+	);
+
 	if (preg_match('@tests[\\\/]@', $file)) {
 		if (preg_match('@\Test\.php$@', $file)) {
-			if ($case = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $case)) {
-				$case = str_replace('Test', '', $case);
-				if ($category === 'core') {
-					$case = str_replace('lib' . DS . 'Cake' . DS . 'tests' . DS . 'Case' . DS, '', $case);
+			$return['testFile'] = $file;
+			$return['testFileExists'] = true;
+			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
+				$return['case'] = str_replace('Test', '', $return['case']);
+				if ($return['category'] === 'core') {
+					$return['case'] = str_replace('lib' . DS . 'Cake' . DS . 'tests' . DS . 'Case' . DS, '', $return['case']);
 				}
-				return array($category, $case);
 			}
 		}
-		return array(false, false);
-	}
-	if ($category === 'core') {
-		$testCaseFile = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $case) . 'Test.php';
-		if (!file_exists($testCaseFile)) {
-			return array(false, false);
-		}
+	} elseif ($return['category'] === 'core') {
+		$return['testCaseFile'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $return['case']) . 'Test.php';
 
-		$case = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $case);
-		$case[0] = strtoupper($case[0]);
-		return array('core', $case);
+		$return['case'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $return['case']);
+		$return['case'][0] = strtoupper($return['case'][0]);
 	} else {
-		$testCaseFile = preg_replace(
+		$return['testFile'] = preg_replace(
 			'@(.*)((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/]).*$|App[-a-z]*$)@',
 			'\1tests/Case/\2.Test.php',
-			$case
+			$return['case']
 		);
-		if (!file_exists($testCaseFile)) {
-			return array(false, false);
-		}
 
-		$relativeFile = preg_replace(
+		$return['case'] = preg_replace(
 			'@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/])|App[-a-z]*$)@',
 			'\1',
-			$case
+			$return['case']
 		);
-		$baseDir = str_replace($relativeFile, '', $case);
 	}
 
-	return array($category, $relativeFile);
+	$return['testCaseFileExists'] = file_exists($return['testCaseFile']);
+	return $return;
 }
 
 /**
@@ -84,32 +82,43 @@ function testCategory($file) {
 	return 'app';
 }
 
+function testCases($files) {
+	$return = array();
 
-$files = files();
-$testCases = array();
-$exit = 0;
-
-foreach ($files as $file) {
-	list($category, $case) = testCase($file);
-
-	if (!$case) {
-		continue;
+	if (is_null($files)) {
+		$files = files();
 	}
-	$testCases[$category][$case] = true;
+	foreach ($files as $file) {
+		$data = testCase($file);
+
+		if (!$data['testCaseFileExists']) {
+			echo "Skipping $file (test case {$data['testCaseFile']} not found)\n";
+			continue;
+		}
+		$return[$data['category']][$data['case']] = true;
+	}
+	return $return;
 }
 
-foreach($testCases as $category => $cases) {
-	foreach(array_keys($cases) as $case) {
-		$output = array();
-		$cmd = "cake testsuite $category $case";
-		echo "$cmd\n";
-		exec($cmd, $output, $return);
+function runTestCases() {
+	$exit = 0;
+	foreach(testCases() as $category => $cases) {
+		foreach(array_keys($cases) as $case) {
+			$output = array();
+			$cmd = "cake testsuite $category $case";
+			echo "$cmd ... \t";
+			exec($cmd, $output, $return);
 
-		if ($return != 0) {
-			echo implode("\n", $output), "\n";
-			$exit = 1;
+			if ($return != 0) {
+				echo "\n" . implode("\n\t", $output), "\n";
+				$exit = 1;
+			} else {
+				echo "OK\n";
+			}
 		}
 	}
+	return $exit;
 }
 
+$exit = runTestCases();
 exit($exit);
