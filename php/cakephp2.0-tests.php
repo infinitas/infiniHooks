@@ -100,9 +100,9 @@ function testCases($files) {
 	return $return;
 }
 
-function runTestCases() {
+function runTestCases($files) {
 	$exit = 0;
-	foreach(testCases() as $category => $cases) {
+	foreach(testCases($files) as $category => $cases) {
 		foreach(array_keys($cases) as $case) {
 			$output = array();
 			$cmd = "cake testsuite $category $case";
