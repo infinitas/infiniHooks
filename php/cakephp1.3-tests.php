@@ -30,34 +30,41 @@ function testCase($file) {
 			$return['testFileExists'] = true;
 			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
 				$return['case'] = str_replace('.test', '', $return['case']);
-				if ($return['category'] === 'core') {
-					$return['case'] = str_replace('lib' . DS, '', $return['case']);
-				}
 			}
 		}
 	} elseif ($return['category'] === 'core') {
 		$return['testFile'] = preg_replace('@(.*cake[\\\/])@', '\1' . 'tests' . DS . 'cases' . DS, $return['case']) . '.test.php';
-
-		$return['case'] = preg_replace('@.*cake[\\\/]?(libs[\\\/])?@', '', $return['case']);
-		$return['case'] = str_replace('libs' . DS, '', $return['case']);
+		$return['case'] = preg_replace('@.*cake[\\\/]?@', '', $return['case']);
 	} else {
-		$return['case'] = preg_replace(
-			'@(?:controllers[\\\/](components[\\\/])|models[\\\/](behaviors|datasources[\\\/])|views[\\\/](helpers[\\\/])|vendors[\\\/](shells[\\\/]))@',
-			'\1',
-			$return['case']
-		);
 		$return['testFile'] = preg_replace(
-			'@(.*)((?:(?:config|controllers|components|libs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
-			'\1tests/cases/\2\.test.php',
+			'@(.*)((?:(?:config|controllers|libs|locale|models|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
+			'\1tests/cases/\2.test.php',
 			$return['case']
 		);
 
 		$return['case'] = preg_replace(
-			'@.*((?:(?:config|controllers|components|libs|locale|models|behaviors|datasources|helpers|shells|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
+			'@.*((?:(?:config|controllers|libs|locale|models|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
 			'\1',
 			$return['case']
 		);
 
+		$map = array(
+			'controllers' . DS . 'components' => 'components',
+			'models' . DS . 'behaviors' => 'behaviors',
+			'models' . DS . 'datasources' => 'datasources',
+			'views' . DS . 'helpers' => 'helpers',
+			'vendors' . DS . 'shells' => 'shells',
+		);
+		foreach ($map as $path => $_type) {
+			if (strpos($return['case'], $path) === 0) {
+				$return['case'] = str_replace($path, $_type, $return['case']);
+				break;
+			}
+		}
+	}
+
+	if ($return['category'] === 'core') {
+		$return['case'] = str_replace('lib' . DS, '', $return['case']);
 	}
 
 	$return['testFileExists'] = file_exists($return['testFile']);
@@ -129,8 +136,8 @@ function runTestCases($files = null) {
 }
 
 function writeTest() {
-	$out = "<?php\ndefine('RUNNING_TESTS', true);\nrequire __DIR__ . '/cakephp2.0-tests.php';\n\n";
-	$out .= "class Cakephp20HookTest extends PHPUnit_Framework_TestCase {\n\n\tfunction testTestCase() {\n";
+	$out = "<?php\ndefine('RUNNING_TESTS', true);\nrequire __DIR__ . '/cakephp1.3-tests.php';\n\n";
+	$out .= "class Cakephp13HookTest extends PHPUnit_Framework_TestCase {\n\n\tfunction testTestCase() {\n";
 	foreach (files() as $file) {
 		$data = testCase($file);
 
@@ -149,7 +156,7 @@ function writeTest() {
 	}
 
 	$out .= "\t}\n}";
-	file_put_contents('cakephp2.0-tests.test.php', $out);
+	file_put_contents('cakephp1.3-tests.test.php', $out);
 	echo $out;
 }
 
