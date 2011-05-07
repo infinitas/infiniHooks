@@ -82,7 +82,7 @@ function testCategory($file) {
 	return 'app';
 }
 
-function testCases($files) {
+function testCases($files = null) {
 	$return = array();
 
 	if (is_null($files)) {
@@ -103,7 +103,7 @@ function testCases($files) {
 	return $return;
 }
 
-function runTestCases($files) {
+function runTestCases($files = null) {
 	$exit = 0;
 	foreach(testCases($files) as $category => $cases) {
 		foreach(array_keys($cases) as $case) {
