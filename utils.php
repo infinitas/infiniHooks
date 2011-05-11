@@ -74,27 +74,46 @@ function copyFiles($files, $name = null) {
 	if (!$name) {
 		$name = trim(basename($_SERVER['PWD']));
 	}
+
+	$tmpDir = "/tmp/$name-git-hooks";
+
 	$return = array(
-		'dir' => "/tmp/$name",
+		'dir' => $tmpDir,
 		'files' => array()
 	);
+
+	foreach($files as $i => $file) {
+		if (!file_exists($file)) {
+			unset($files[$i]);
+			continue;
+		}
+		$return['files'][] = "$tmpDir/$file";
+	}
+
+	if (
+		file_exists("/$tmpDir.lock") &&
+		is_dir($tmpDir) &&
+		(filemtime($tmpDir) >= filemtime("$tmpDir.lock"))
+	) {
+		return $return;
+	}
+
 	`rm -rf /tmp/$name`;
 
 	if (!trim(`echo \$GIT_DIR`) && !trim(`echo \$GIT_AUTHOR_NAME`)) {
 		`cp -R . /tmp/$name`;
-		foreach($files as $file) {
-			$return['files'][] = "/tmp/$name/$file";
-		}
 		return $return;
 	}
 
 	foreach($files as $file) {
 		$dir = dirname($file);
-		if (!is_dir("/tmp/$name/$dir")) {
- 			`mkdir -p /tmp/$name/$dir`;
+		$dir = ($dir === '.') ? '' : $dir;
+
+		if (!is_dir("$tmpDir/$dir")) {
+ 			echo `mkdir -p $tmpDir/$dir`;
 		}
-		`git cat-file blob $(git diff-index --cached HEAD $file | cut -d " " -f4) > /tmp/$name/$file`;
-		$return['files'][] = "/tmp/$name/$file";
+
+		`git cat-file blob $(git diff-index --cached HEAD $file | cut -d " " -f4) > $tmpDir/$file`;
 	}
 
 	return $return;
