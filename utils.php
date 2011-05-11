@@ -1,8 +1,23 @@
 <?php
+/**
+ * For convenience in other scripts
+ */
 if (!defined('DS')) {
 	define('DS', DIRECTORY_SEPARATOR);
 }
 
+/**
+ * Finds the config for the current branch.
+ *
+ * config.php can either contain a $config array to be directly used, or an array of $config arrays
+ * indexed by branch name/pattern. If there exists the array key pre-commit, it is assumed that a
+ * 1 dimensional config array has been specified in the config variable. Otherwise, loop on all
+ * defined configs, and return the merged/combined config for the current branch.
+ *
+ * @param mixed $branch
+ * @access public
+ * @return array()
+ */
 function config($branch = null)  {
 	if (!$branch) {
 		$branch = trim(`git name-rev --name-only HEAD`);
