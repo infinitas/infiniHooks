@@ -35,17 +35,22 @@ foreach ($files as $file) {
 	exec($cmd);
 
 	$sizeOpt = filesize($tmp);
-	if ($sizeOpt && $sizeOpt < $sizeOrig) {
-		exec("mv $tmp $file");
+	$diff = $sizeOrig - $sizeOpt;
+	if ($sizeOpt) {
+		if ($diff > 5000) {
+			exec("mv $tmp $file");
 
-		$diff = $sizeOrig - $sizeOpt;
-		$saving += $diff;
+			$saving += $diff;
 
-		$percent = number_format(100 * $diff / $sizeOrig, 2);
-		if ($percent > 50) {
-			$percent = "****$percent****";
+			$percent = number_format(100 * $diff / $sizeOrig, 2);
+			if ($percent > 50) {
+				$percent = "****$percent****";
+			}
+			echo "\t\t$sizeOrig bytes -> $sizeOpt bytes. Removed $diff bytes ($percent%)\n";
+		} else  {
+			unlink($tmp);
+			echo "\t\tNo significant saving\n";
 		}
-		echo "\t\t$sizeOrig bytes -> $sizeOpt bytes. Removed $diff bytes ($percent%)\n";
 	} else {
 		unlink($tmp);
 		echo "\t\tNo saving\n";
