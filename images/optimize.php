@@ -36,13 +36,15 @@ foreach ($files as $file) {
 
 	$sizeOpt = filesize($tmp);
 	$diff = $sizeOrig - $sizeOpt;
+	if ($diff) {
+		$percent = number_format(100 * $diff / $sizeOrig, 2);
+	}
 	if ($sizeOpt) {
-		if ($diff > 5000) {
+		if ($diff > 5000 && $percent > 5) {
 			exec("mv $tmp $file");
 
 			$saving += $diff;
 
-			$percent = number_format(100 * $diff / $sizeOrig, 2);
 			if ($percent > 50) {
 				$percent = "****$percent****";
 			}
