@@ -13,9 +13,15 @@ foreach ($files as $file) {
 	if (!is_file($file) || !preg_match('/\.(bmp|gif|jpe?g|png)$/i', $file)) {
 		continue;
 	}
-	$hasImages = true;
 
 	$sizeOrig = filesize($file);
+
+	if ($sizeOrig < 10000) {
+		continue;
+	}
+
+	$hasImages = true;
+
 	$tmp = tempnam('/tmp', 'img_');
 
 	$file = escapeshellarg($file);
