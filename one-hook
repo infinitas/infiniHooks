@@ -18,7 +18,8 @@ foreach ($config[$file] as $command => $halt) {
 	echo "running $command ... \t";
     $output = array();
     $return = 0;
-    exec(__DIR__ . "/$command", $output, $return);
+
+    exec(".git/hooks/$command", $output, $return);
     if ($return) {
         echo "FAIL\n";
 		$exit = 1;

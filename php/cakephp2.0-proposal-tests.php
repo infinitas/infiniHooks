@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require dirname(__DIR__) .'/utils.php';
+require $_SERVER['PWD'] . '/.git/hooks/utils.php';
 
 function testFile($file) {
 	if (!preg_match('@\.php$@', $file) || preg_match('@(config|test_app)[\\\/]@', $file)) {
