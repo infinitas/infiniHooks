@@ -26,6 +26,7 @@ $config = array(
 			'js/lint.php' => true,
 			'php/phpcs.php',
 			'php/phpunit.php',
+			'images/optimize.php',
 		),
 		'post-commit' => array(
 			'misc/happy-commits',
