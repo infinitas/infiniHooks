@@ -9,6 +9,9 @@ if (empty($config[$file])) {
 }
 
 $exit = 0;
+$name = trim(basename($_SERVER['PWD']));
+
+touch("/tmp/$name-git-hooks.lock");
 
 foreach ($config[$file] as $command => $halt) {
 	if (is_numeric($command)) {
@@ -31,5 +34,8 @@ foreach ($config[$file] as $command => $halt) {
         echo "OK\n";
     }
 }
+
+unlink("/tmp/$name-git-hooks.lock");
+`rm -rf /tmp/$name-git-hooks`;
 
 exit ($exit);
