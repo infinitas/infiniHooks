@@ -27,6 +27,7 @@ for each project
 
 
 2.0.0	Rewritten to be PHP and configuration based
+
 1.0.0	Initial release, mostly bash scripts
 
 # Credits
@@ -34,3 +35,4 @@ for each project
 This repo originally came from http://github.com/s0enke/git-hooks
 
 The php based config etc. originally came from http://github.com/ardell/git-hooks
+
