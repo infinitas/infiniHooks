@@ -49,7 +49,7 @@ foreach ($files as $file) {
 				$percent = "****$percent****";
 			}
 			echo "\t\t$sizeOrig bytes -> $sizeOpt bytes. Removed $diff bytes ($percent%)\n";
-		} else  {
+		} else {
 			unlink($tmp);
 			echo "\t\tNo significant saving\n";
 		}
