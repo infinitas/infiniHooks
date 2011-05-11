@@ -31,6 +31,10 @@ $config = array(
 		'post-commit' => array(
 			'misc/happy-commits',
 		),
+		'post-merge' => array(
+			'php/lint.php',
+			'js/lint.php'
+		),
 		'php' => array(
 			'lint' => array(
 				'pattern' => '/\.php$/'
