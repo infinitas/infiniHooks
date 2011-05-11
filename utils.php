@@ -113,6 +113,8 @@ function copyFiles($files, $name = null) {
  			echo `mkdir -p $tmpDir/$dir`;
 		}
 
+		$file = escapeshellarg($file);
+
 		`git cat-file blob $(git diff-index --cached HEAD $file | cut -d " " -f4) > $tmpDir/$file`;
 	}
 
