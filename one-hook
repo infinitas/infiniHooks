@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+require  dirname($_SERVER['SCRIPT_FILENAME']) . '/utils.php';
+$config = config();
+
+$file = basename($_SERVER['SCRIPT_FILENAME']);
+if (empty($config[$file])) {
+	exit(0);
+}
+
+$exit = 0;
+$name = trim(basename($_SERVER['PWD']));
+
+touch("/tmp/$name-git-hooks.lock");
+
+foreach ($config[$file] as $command => $halt) {
+	if (is_numeric($command)) {
+		$command = $halt;
+		$halt = false;
+	}
+	echo "running $command ... \t";
+    $output = array();
+    $return = 0;
+
+    exec(".git/hooks/$command", $output, $return);
+    if ($return) {
+        echo "FAIL\n";
+		$exit = 1;
+        echo implode("\n", $output) . "\n";
+		if ($halt) {
+			exit ($exit);
+		}
+    } else {
+        echo "OK\n";
+    }
+}
+
+unlink("/tmp/$name-git-hooks.lock");
+`rm -rf /tmp/$name-git-hooks`;
+
+exit ($exit);

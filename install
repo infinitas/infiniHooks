@@ -1,0 +1,7 @@
+#!/bin/bash
+# Very simply - just symlinks installGitHooks into your path
+
+dest=/usr/local/bin
+src=`pwd`
+
+sudo ln -s $src/installGitHooks $dest && chmod +x $dest/installGitHooks
