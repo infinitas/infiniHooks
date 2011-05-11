@@ -1,10 +1,4 @@
 <?php
-/**
- * For convenience in other scripts
- */
-if (!defined('DS')) {
-	define('DS', DIRECTORY_SEPARATOR);
-}
 
 /**
  * Finds the config for the current branch.

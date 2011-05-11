@@ -33,8 +33,12 @@ function testCase($file) {
 			}
 		}
 	} elseif ($return['category'] === 'core') {
-		$return['testFile'] = preg_replace('@(.*cake[\\\/])@', '\1' . 'tests' . DS . 'cases' . DS, $return['case']) . '.test.php';
-		$return['case'] = preg_replace('@.*cake[\\\/]?@', '', $return['case']);
+		$return['testFile'] = preg_replace('@(.*cake[\\\/])@', '\1tests/cases/', $return['case']) . '.test.php';
+		$return['case'] = str_replace(
+			'/',
+			DIRECTORY_SEPARATOR,
+			preg_replace('@.*cake[\\\/]?@', '', $return['case'])
+		);
 	} else {
 		$return['testFile'] = preg_replace(
 			'@(.*)((?:(?:config|controllers|libs|locale|models|plugins|tests|vendors|views)[\\\/]).*$|app[-a-z]*$)@',
@@ -49,14 +53,20 @@ function testCase($file) {
 		);
 
 		$map = array(
-			'controllers' . DS . 'components' => 'components',
-			'models' . DS . 'behaviors' => 'behaviors',
-			'models' . DS . 'datasources' => 'datasources',
-			'views' . DS . 'helpers' => 'helpers',
-			'vendors' . DS . 'shells' => 'shells',
+			'controllers/components' => 'components',
+			'models/behaviors' => 'behaviors',
+			'models/datasources' => 'datasources',
+			'views/helpers' => 'helpers',
+			'vendors/shells' => 'shells',
 		);
 		foreach ($map as $path => $_type) {
 			if (strpos($return['case'], $path) === 0) {
+				$path = str_replace(
+					'/',
+					DIRECTORY_SEPARATOR,
+					$path
+				);
+
 				$return['case'] = str_replace($path, $_type, $return['case']);
 				break;
 			}
@@ -64,7 +74,7 @@ function testCase($file) {
 	}
 
 	if ($return['category'] === 'core') {
-		$return['case'] = str_replace('lib' . DS, '', $return['case']);
+		$return['case'] = str_replace('lib/', '', $return['case']);
 	}
 
 	$return['testFileExists'] = file_exists($return['testFile']);

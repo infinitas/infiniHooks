@@ -24,6 +24,7 @@ function testCase($file) {
 		'testFileExists' => false,
 	);
 
+	$ds = DIRECTORY_SEPARATOR;
 	if (preg_match('@tests[\\\/]@', $file)) {
 		if (preg_match('@Test\.php$@', $file)) {
 			$return['testFile'] = $file;
@@ -31,7 +32,11 @@ function testCase($file) {
 			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
 				$return['case'] = str_replace('Test', '', $return['case']);
 				if ($return['category'] === 'core') {
-					$return['case'] = str_replace('lib' . DS . 'Cake' . DS . 'tests' . DS . 'Case' . DS, '', $return['case']);
+					$return['case'] = str_replace(
+						'/',
+						DIRECTORY_SEPARATOR,
+						str_replace('lib/Cake/tests/Case/', '', $return['case'])
+					);
 				}
 			}
 		}
