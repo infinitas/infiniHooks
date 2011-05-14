@@ -2,7 +2,6 @@
 <?php
 
 require $_SERVER['PWD'] . '/.git/hooks/utils.php';
-$config = config();
 
 $files = files();
 
