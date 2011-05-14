@@ -30,7 +30,7 @@ function testCase($file) {
 			$return['testFile'] = $file;
 			$return['testFileExists'] = true;
 			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
-				$return['case'] = str_replace('Test', '', $return['case']);
+				$return['case'] = str_replace('Test.', '.', $return['case']);
 				if ($return['category'] === 'core') {
 					$return['case'] = str_replace(
 						'/',
