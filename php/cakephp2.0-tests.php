@@ -114,7 +114,7 @@ function runTestCases($files = null) {
 		foreach(array_keys($cases) as $case) {
 			$output = array();
 			$cmd = "cake testsuite $category $case";
-			$time = date("H:m:s");
+			$time = date("H:i:s");
 			echo "[$time] $cmd ... \t";
 			exec($cmd, $output, $return);
 
