@@ -132,7 +132,8 @@ function runTestCases($files = null) {
 		foreach(array_keys($cases) as $case) {
 			$output = array();
 			$cmd = "cake testsuite $category case $case";
-			echo "$cmd ... \t";
+			$time = date("H:m:s");
+			echo "[$time] $cmd ... \t";
 			exec($cmd, $output, $return);
 			if ($return != 0) {
 				echo "\n" . implode("\n\t", $output), "\n";
