@@ -1,17 +1,34 @@
 #!/usr/bin/env php
 <?php
 
-if (!file_exists('tests/smoke.test.php')) {
-	exit(0);
+require $_SERVER['PWD'] . '/.git/hooks/utils.php';
+$config = config();
+
+$files = files();
+
+$status = 0;
+
+foreach ($files as $file) {
+	if (!preg_match('@\.php$@', $file)) {
+		continue;
+	}
+	if (preg_match('@\.test\.php$@', $file)) {
+		$test = $file;
+	} else {
+		$test = preg_replace('@\.php$@', '.test.php', $file);
+		if (!file_exists($test)) {
+			continue;
+		}
+	}
+
+	$cmd = "phpunit --stop-on-failure " . escapeshellarg($test);
+	$output = array();
+	echo "$cmd\n";
+	exec($cmd, $output, $return);
+	if ($return != 0) {
+		echo implode("\n", $output), "\n";
+		$status = 1;
+	}
 }
 
-$output = array();
-$return = 0;
-$exit = 0;
-exec("phpunit --stop-on-failure tests/smoke.test.php", $output, $return);
-
-if ($return != 0) {
-	echo implode("\n", $output) . "\n";
-	$exit = 1;
-	exit($exit);
-}
+exit($status);
