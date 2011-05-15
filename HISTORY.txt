@@ -1,0 +1,18 @@
+=== 2.1.0
+
+ * Added (draft) html lint hook
+ * cakephp 2.0 test runner updated to not strip Test out of file/dir names
+ * timestamps added to cakephp output
+ * cakephp test runners updated to ignore group tests
+ * phpunit hook made usable
+ * files return sorted alphabetically
+
+=== 2.0.0 2011-05-11
+
+ * Restructured to be php, based on the work of @ardell
+ * Added possibility for branch-specific hooks
+ * Hook scripts added for php, cakephp, javascript and images
+
+=== 1.0.0 2011-02-18
+
+ * Initial release, bash scripts
