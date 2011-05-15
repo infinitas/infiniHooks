@@ -112,6 +112,9 @@ function runTestCases($files = null) {
 	$exit = 0;
 	foreach(testCases($files) as $category => $cases) {
 		foreach(array_keys($cases) as $case) {
+			if (strpos($case, 'All') === 0) {
+				continue;
+			}
 			$output = array();
 			$cmd = "cake testsuite $category $case";
 			$time = date("H:i:s");
