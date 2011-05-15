@@ -118,14 +118,14 @@ function runTestCases($files = null) {
 			$output = array();
 			$cmd = "cake testsuite $category $case --stderr 2>&1";
 			$time = date("H:i:s");
-			echo "[$time] $cmd ... \n";
+			echo "[$time] $cmd ... \t";
 			exec($cmd, $output, $return);
 
 			if ($return != 0) {
-				echo "\n\t\tKO\n";
+				echo "\n" . implode("\n\t", $output), "\n";
 				$exit = 1;
 			} else {
-				echo "\n\t\tOK\n";
+				echo "OK\n";
 			}
 		}
 	}
