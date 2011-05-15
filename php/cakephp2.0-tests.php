@@ -116,7 +116,7 @@ function runTestCases($files = null) {
 				continue;
 			}
 			$output = array();
-			$cmd = "cake testsuite $category $case --stderr";
+			$cmd = "cake testsuite $category $case --stderr 2>&1";
 			$time = date("H:i:s");
 			echo "[$time] $cmd ... \n";
 			exec($cmd, $output, $return);
