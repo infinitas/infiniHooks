@@ -28,3 +28,4 @@ for each project
 This repo originally came from http://github.com/s0enke/git-hooks
 
 The php based config etc. originally came from http://github.com/ardell/git-hooks
+
