@@ -59,6 +59,7 @@ function files() {
 			}
 			$file = preg_replace('@^\./@', '', $file);
 		}
+		sort($output);
 		return array_filter($output);
 	}
 	exec('git rev-parse --verify HEAD 2> /dev/null', $output, $return);
