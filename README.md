@@ -1,7 +1,7 @@
 Git hooks
 =========
 
-Various git hooks, mix and match however you want on a project by project basis.
+Various git hooks, mix and match however you want on a project by project (and even branch by branch) basis.
 
 # Install
 
