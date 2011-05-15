@@ -25,35 +25,35 @@ function testCase($file) {
 	);
 
 	$ds = DIRECTORY_SEPARATOR;
-	if (preg_match('@tests[\\\/]@', $file)) {
+	if (preg_match('@Test[\\\/]@', $file)) {
 		if (preg_match('@Test\.php$@', $file)) {
 			$return['testFile'] = $file;
 			$return['testFileExists'] = true;
-			if ($return['case'] = preg_replace('@.*tests[\\\/]cases[\\\/]@', '', $return['case'])) {
+			if ($return['case'] = preg_replace('@.*Test[\\\/]cases[\\\/]@', '', $return['case'])) {
 				$return['case'] = preg_replace('@Test$@', '', $return['case']);
 				if ($return['category'] === 'core') {
 					$return['case'] = str_replace(
 						'/',
 						DIRECTORY_SEPARATOR,
-						str_replace('lib/Cake/tests/Case/', '', $return['case'])
+						str_replace('lib/Cake/Test/Case/', '', $return['case'])
 					);
 				}
 			}
 		}
 	} elseif ($return['category'] === 'core') {
-		$return['testFile'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/tests/Case/', $return['case']) . 'Test.php';
+		$return['testFile'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', 'lib/Cake/Test/Case/', $return['case']) . 'Test.php';
 
 		$return['case'] = preg_replace('@.*lib[\\\/]Cake[\\\/]@', '', $return['case']);
 		$return['case'][0] = strtoupper($return['case'][0]);
 	} else {
 		$return['testFile'] = preg_replace(
-			'@(.*)((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/]).*$|App[-a-z]*$)@',
-			'\1tests/Case/\2Test.php',
+			'@(.*)((?:(?:config|Console|Controller|Lib|locale|Model|plugins|Test|vendors|View|webroot)[\\\/]).*$|App[-a-z]*$)@',
+			'\1Test/Case/\2Test.php',
 			$return['case']
 		);
 
 		$return['case'] = preg_replace(
-			'@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|tests|vendors|View|webroot)[\\\/])|App[-a-z]*$)@',
+			'@.*((?:(?:config|Console|Controller|Lib|locale|Model|plugins|Test|vendors|View|webroot)[\\\/])|App[-a-z]*$)@',
 			'\1',
 			$return['case']
 		);
