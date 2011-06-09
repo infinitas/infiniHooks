@@ -3,6 +3,10 @@
 require $_SERVER['PWD'] . '/.git/hooks/utils.php';
 $config = config();
 
+if(onlyDeleting()){
+	exit(0);
+}
+
 $files = files();
 $tmp = copyFiles($files);
 if (!is_dir($tmp['dir'])) {

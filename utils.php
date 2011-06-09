@@ -129,3 +129,26 @@ function copyFiles($files, $name = null) {
 
 	return $return;
 }
+
+/**
+ * if only deleting files skip the phpcs checks 'git status --porcelain outputs'
+ * the files to be commited without a space before the status, not tracked files
+ * also dont have a space but start with ? other changed files start with a space
+ * followed by the status
+ *
+ * possible status D(eleted), M(odified), ??(added)
+ */
+function onlyDeleting(){
+	$status = array();
+	foreach(explode("\n", `git status --porcelain`) as $line){
+		if(!empty($line) && !in_array(substr($line, 0, 1), array('?', ' '))){
+			$status[] = substr($line, 0, 1);
+		}
+	}
+
+	if(count(array_flip($status)) == 1 && current($status) == 'D'){
+		return true;
+	}
+	
+	return false;
+}
