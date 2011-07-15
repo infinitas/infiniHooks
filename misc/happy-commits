@@ -3,6 +3,15 @@
 
 // From: http://collectiveidea.com/blog/archives/2010/08/03/happy-git-commits/
 $dir = __DIR__;
-$command = "afplay $dir/happykids.wav > /dev/null 2>&1 &";
-exec($command);
-exit(0);
+$command = null;
+if(`which afplay`){
+	$command = 'afplay';
+}
+else if(`which mplayer`){
+	$command = 'mplayer';
+}
+
+if($command){
+	exec($command . " $dir/happykids.wav > /dev/null 2>&1 &");
+	exit(0);
+}
