@@ -84,3 +84,5 @@ foreach($files as $file) {
 if($fail) {
 	exit(1);
 }
+
+exit(0);
