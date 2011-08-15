@@ -66,9 +66,13 @@ function get_test_classes($php_code) {
 }
 
 foreach($files as $file) {
+	$content = file_get_contents($file);
+	$lines = preg_split( '/\r\n|\r|\n/',$content);
+	$tokens = token_get_all($content);
+
 	/* Validating stuff in test cases */
 	if(strrpos($file, '.test.php')) {
-		$content = file_get_contents($file);
+
 		$classes = get_test_classes($content);
 		
 		foreach($classes as $class) {
@@ -77,6 +81,20 @@ foreach($files as $file) {
 
 				echo 'remove the $tests variable in ' . $file . ' (line '. $class['hasDebugVar'] . ")\n";
 			}
+		}
+	}
+
+	foreach($lines as $n => $line) {
+		$lineNumber = $n + 1;
+
+		if(preg_match('/(?<![a-zA-Z_])debug\(/', $line)) {
+			$fail = true;
+			echo 'using debug() function in ' . $file . ' (line ' . $lineNumber . ")\n";
+		}
+
+		if(preg_match('/(?<![a-zA-Z_])print_r\(/', $line)) {
+			$fail = true;
+			echo 'using print_r() function in ' . $file . ' (line ' . $lineNumber . ")\n";
 		}
 	}
 }
