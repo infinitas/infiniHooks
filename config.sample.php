@@ -27,6 +27,7 @@ $config = array(
 			'php/phpcs.php',
 			'php/phpunit.php',
 			'images/optimize.php',
+			'php/debugcatcher.php'
 		),
 		'post-commit' => array(
 			'misc/happy-commits',
